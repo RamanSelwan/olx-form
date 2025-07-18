@@ -51,40 +51,46 @@ const categories = [
 // --- Main Component ---
 
 const PostAdWizard = () => {
-  const [selectedCategory, setSelectedCategory] = useState("Properties");
+  const [hoveredCategory, setHoveredCategory] = useState(null); // State for hovered category
 
-  const selected = categories.find((cat) => cat.name === selectedCategory);
+  // Determine which category's sub-panel to show: hovered first, then default selected
+  const categoryToShow = hoveredCategory || categories.find(cat => cat.name === "Properties");
+  const selected = categoryToShow ? categories.find((cat) => cat.name === categoryToShow.name) : null;
+
 
   const renderSubcategory = (sub, idx) => {
+    // Determine if this subcategory should be highlighted (e.g., if it's the target link)
+    const isTargetSubcategory = sub === "For Rent: Houses & Apartments";
+
     const commonClasses = `flex items-center h-12 px-5 cursor-pointer border-b border-gray-200 last:border-b-0 hover:bg-gray-100 transition-colors duration-200`;
 
-    // A specific subcategory is linked to a different page
-    if (sub === "For Rent: Houses & Apartments") {
+    if (isTargetSubcategory) {
       return (
         <Link
           key={idx}
           to="/olx-form" // This route should be configured in your React Router setup
-          className={commonClasses}
+          className={commonClasses} // Apply common classes
           style={{ textDecoration: "none", color: "inherit" }}
         >
           <FaHome className="w-6 mr-3 text-gray-500" />
-          <span className="text-base font-normal">{sub}</span>
+          <span className="text-sm font-normal">{sub}</span> {/* Changed to text-sm */}
         </Link>
       );
     }
 
-    // All other subcategories
     return (
       <div key={idx} className={commonClasses}>
-        <FaHome className="w-6 mr-3 text-gray-500" />
-        <span className="text-base font-normal">{sub}</span>
+        {/* You might want a different icon here based on the subcategory type, 
+            but for now, keeping FaHome as per previous code */}
+        <FaHome className="w-6 mr-3 text-gray-500" /> 
+        <span className="text-sm font-normal">{sub}</span> {/* Changed to text-sm */}
       </div>
     );
   };
   
   return (
     <div className="w-screen min-h-screen bg-gray-50 pt-8 box-border">
-      <h2 className="text-center font-bold mb-6 text-base">POST YOUR AD</h2>
+      <h2 className="text-center font-bold mb-6 text-2xl">POST YOUR AD</h2>
       
       <div className="max-w-xl my-6 mx-auto border-2 border-gray-300 rounded-md bg-white overflow-hidden">
         <div className="text-base font-semibold px-6 pt-[18px] pb-3 border-b border-gray-200 bg-gray-50 tracking-wide">
@@ -98,14 +104,15 @@ const PostAdWizard = () => {
               <div
                 key={cat.name}
                 className={`flex items-center h-12 px-5 cursor-pointer border-b border-gray-200 last:border-b-0 transition-colors duration-200
-                  ${selectedCategory === cat.name ? "bg-slate-200" : "bg-white hover:bg-gray-100"}`
+                  ${(hoveredCategory && hoveredCategory.name === cat.name) ? "bg-gray-200" : "bg-white hover:bg-gray-100"}` 
                 }
-                onClick={() => setSelectedCategory(cat.name)}
+                onMouseEnter={() => setHoveredCategory(cat)} 
+                onMouseLeave={() => setHoveredCategory(null)} 
               >
-                <span className="w-7 flex items-center justify-center text-xl mr-3">
+                <span className="w-7 flex items-center justify-center text-xl mr-3 text-gray-500">
                   {iconMap[cat.name]}
                 </span>
-                <span className="flex-1 font-normal text-base">{cat.name}</span>
+                <span className="flex-1 font-normal text-sm">{cat.name}</span> {/* Changed to text-sm */}
                 <FaChevronRight className="text-gray-500 text-base" />
               </div>
             ))}

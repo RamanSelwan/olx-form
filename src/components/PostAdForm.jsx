@@ -6,7 +6,7 @@ import { Link, useNavigate } from "react-router-dom"; // Import useNavigate
 const CameraIcon = () => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
-    className="h-8 w-8 text-gray-500"
+    className="h-6 w-6 text-gray-400" // Slightly lighter gray for icon
     fill="none"
     viewBox="0 0 24 24"
     stroke="currentColor"
@@ -26,14 +26,17 @@ const CameraIcon = () => (
 );
 
 const FormSection = ({ title, children }) => (
-  <div className="py-6 border-b border-gray-200 ">
+  // Adjusted padding-x to match the image's internal spacing within the main white box.
+  // The bottom border is consistent with the image.
+  <div className="py-6 border-b border-gray-200 last:border-b-0 px-8">
     <h3 className="text-lg font-bold text-gray-800 mb-4">{title}</h3>
     {children}
   </div>
 );
 
 const ButtonGroup = ({ label, options, selected, onSelect, error }) => (
-  <div className="mb-4">
+  // Increased mb to match spacing
+  <div className="mb-6">
     <label className="block text-sm font-medium text-gray-700 mb-2">
       {label}
     </label>
@@ -43,11 +46,11 @@ const ButtonGroup = ({ label, options, selected, onSelect, error }) => (
           key={option}
           type="button"
           onClick={() => onSelect(option)}
-          className={`px-4 py-2 text-sm border rounded-md transition-colors duration-200 ${
-            selected === option
-              ? "bg-cyan-100 border-cyan-500 text-cyan-700 font-semibold"
-              : "bg-white border-gray-300 hover:border-gray-400"
-          }`}
+          className={`px-4 py-2 text-sm border rounded-md transition-colors duration-200 
+            ${selected === option
+              ? "bg-blue-50 border-blue-500 text-blue-700 font-semibold" // OLX blue shade for selected state
+              : "bg-white border-gray-300 text-gray-800 hover:border-blue-500" // Standard text color, border matches image
+            }`}
         >
           {option}
         </button>
@@ -57,7 +60,6 @@ const ButtonGroup = ({ label, options, selected, onSelect, error }) => (
   </div>
 );
 
-// --- MODIFIED: InputField to accept a prefix ---
 const InputField = ({
   label,
   name,
@@ -70,7 +72,8 @@ const InputField = ({
   showCharCount = false,
   prefix = null,
 }) => (
-  <div className="mb-4">
+  // Increased mb
+  <div className="mb-6">
     <label
       htmlFor={name}
       className="block text-sm font-medium text-gray-700 mb-2"
@@ -80,7 +83,9 @@ const InputField = ({
     <div className="relative">
       {prefix && (
         <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-          <span className="text-gray-500 font-semibold">{prefix}</span>
+          <span className="text-gray-500 font-semibold text-lg">
+            {prefix}
+          </span>
         </div>
       )}
       <input
@@ -91,14 +96,15 @@ const InputField = ({
         onChange={onChange}
         placeholder={placeholder}
         maxLength={maxLength}
-        className={`w-full py-2 border rounded-md focus:outline-none focus:ring-1 ${
+        // Adjusted border-color to gray-300 for default and focus-ring to blue-500 as per OLX style
+        className={`w-full h-10 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500 text-base text-gray-800 ${
           error
             ? "border-red-500 focus:ring-red-500"
-            : "border-gray-300 focus:ring-cyan-500"
-        } ${prefix ? "pl-7 pr-3" : "px-3"}`}
+            : ""
+        } ${prefix ? "pl-8 pr-3" : "px-3"}`} // Adjust pl and pr for general padding
       />
       {showCharCount && (
-        <span className="absolute right-3 bottom-2 text-xs text-gray-400">
+        <span className="absolute right-3 bottom-2 text-xs text-gray-400"> {/* Gray 400 for char count */}
           {value.length} / {maxLength}
         </span>
       )}
@@ -107,7 +113,6 @@ const InputField = ({
   </div>
 );
 
-// --- NEW: TextareaField component ---
 const TextareaField = ({
   label,
   name,
@@ -116,8 +121,10 @@ const TextareaField = ({
   error,
   maxLength,
   showCharCount = false,
+  placeholder, // Added placeholder prop
 }) => (
-  <div className="mb-4">
+  // Increased mb
+  <div className="mb-6">
     <label
       htmlFor={name}
       className="block text-sm font-medium text-gray-700 mb-2"
@@ -132,10 +139,11 @@ const TextareaField = ({
         onChange={onChange}
         maxLength={maxLength}
         rows={5}
-        className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-1 ${
+        placeholder={placeholder} // Applied placeholder
+        className={`w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500 text-base text-gray-800 resize-none ${
           error
             ? "border-red-500 focus:ring-red-500"
-            : "border-gray-300 focus:ring-cyan-500"
+            : ""
         }`}
       />
       {showCharCount && (
@@ -150,7 +158,8 @@ const TextareaField = ({
 
 
 const SelectField = ({ label, name, value, onChange, options, error }) => (
-  <div className="mb-4">
+  // Increased mb
+  <div className="mb-6">
     <label
       htmlFor={name}
       className="block text-sm font-medium text-gray-700 mb-2"
@@ -162,10 +171,10 @@ const SelectField = ({ label, name, value, onChange, options, error }) => (
       name={name}
       value={value}
       onChange={onChange}
-      className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-1 bg-white ${
+      className={`w-full h-10 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500 bg-white text-base text-gray-800 ${
         error
           ? "border-red-500 focus:ring-red-500"
-          : "border-gray-300 focus:ring-cyan-500"
+          : ""
       }`}
     >
       <option value="" disabled>
@@ -232,13 +241,16 @@ const IncludeDetailsSection = ({
       error={errors.listedBy}
     />
 
-    <div className="grid grid-cols-1 gap-x-6">
+    {/* Using a single column grid with default gaps for vertical stacking */}
+    <div>
       <InputField
         label="Super Builtup area sqft *"
         name="superBuiltupArea"
         value={formData.superBuiltupArea}
         onChange={handleChange}
         error={errors.superBuiltupArea}
+        placeholder="Super Builtup area"
+        type="number" // Ensure numeric input
       />
       <InputField
         label="Carpet Area sqft *"
@@ -246,6 +258,8 @@ const IncludeDetailsSection = ({
         value={formData.carpetArea}
         onChange={handleChange}
         error={errors.carpetArea}
+        placeholder="Carpet Area"
+        type="number" // Ensure numeric input
       />
       <InputField
         label="Maintenance (Monthly)"
@@ -253,6 +267,8 @@ const IncludeDetailsSection = ({
         value={formData.maintenance}
         onChange={handleChange}
         error={errors.maintenance}
+        placeholder="Monthly Maintenance"
+        type="number" // Ensure numeric input
       />
       <InputField
         label="Total Floors"
@@ -260,6 +276,8 @@ const IncludeDetailsSection = ({
         value={formData.totalFloors}
         onChange={handleChange}
         error={errors.totalFloors}
+        placeholder="Total Floors"
+        type="number" // Ensure numeric input
       />
       <InputField
         label="Floor No."
@@ -267,6 +285,8 @@ const IncludeDetailsSection = ({
         value={formData.floorNo}
         onChange={handleChange}
         error={errors.floorNo}
+        placeholder="Floor Number"
+        type="number" // Ensure numeric input
       />
     </div>
     <ButtonGroup
@@ -296,6 +316,7 @@ const IncludeDetailsSection = ({
       name="projectName"
       value={formData.projectName}
       onChange={handleChange}
+      placeholder="Project name"
     />
     <InputField
       label="Ad title *"
@@ -305,8 +326,8 @@ const IncludeDetailsSection = ({
       error={errors.adTitle}
       maxLength={70}
       showCharCount={true}
+      placeholder="Mention the key features of your item (e.g. brand, model, age, type)"
     />
-    {/* --- USE NEW TextareaField --- */}
     <TextareaField
       label="Description *"
       name="description"
@@ -315,11 +336,11 @@ const IncludeDetailsSection = ({
       error={errors.description}
       maxLength={4096}
       showCharCount={true}
+      placeholder="Include condition, features and reason for selling"
     />
   </FormSection>
 );
 
-// --- MODIFIED: PriceSection to use prefix correctly ---
 const PriceSection = ({ formData, errors, handleChange }) => (
   <FormSection title="SET A PRICE">
     <InputField
@@ -329,6 +350,8 @@ const PriceSection = ({ formData, errors, handleChange }) => (
       onChange={handleChange}
       error={errors.price}
       prefix="₹"
+      placeholder="0"
+      type="number"
     />
   </FormSection>
 );
@@ -347,7 +370,7 @@ const PhotoUploadSection = ({ photos, error, onFileSelect, onRemove }) => {
   };
 
   const handleRemoveClick = (e, index) => {
-    e.stopPropagation();
+    e.stopPropagation(); // Prevent triggering handleBoxClick
     onRemove(index);
   };
 
@@ -368,48 +391,63 @@ const PhotoUploadSection = ({ photos, error, onFileSelect, onRemove }) => {
         multiple
         onChange={(e) => onFileSelect(e, "other")}
       />
+      {/* Adjusted grid columns and gap to match the image, and refined border styles */}
       <div className="grid grid-cols-4 sm:grid-cols-5 md:grid-cols-6 gap-2">
-        {photos.map((photo, index) => (
-          <div
-            key={index}
-            onClick={() => handleBoxClick(index, !!photo)}
-            className="aspect-square border-2 border-dashed rounded-md flex flex-col items-center justify-center text-center cursor-pointer hover:bg-gray-50 relative"
-          >
-            {photo ? (
-              <>
-                <img
-                  src={URL.createObjectURL(photo)}
-                  alt={`Upload ${index}`}
-                  className="w-full h-full object-cover rounded-md"
-                />
-                <button
-                  type="button"
-                  onClick={(e) => handleRemoveClick(e, index)}
-                  className="absolute top-1 right-1 bg-black bg-opacity-50 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs"
-                >
-                  &#x2715;
-                </button>
-              </>
-            ) : (
-              <>
-                <CameraIcon />
-                {index === 0 && (
-                  <span className="text-xs text-gray-600 mt-1">
-                    Add Cover Photo
-                  </span>
-                )}
-              </>
-            )}
-          </div>
-        ))}
+        {Array.from({ length: 20 }).map((_, index) => { // Render 20 boxes explicitly
+          const photo = photos[index];
+          return (
+            <div
+              key={index}
+              onClick={() => handleBoxClick(index, !!photo)}
+              className={`relative aspect-square border rounded-md flex flex-col items-center justify-center text-center cursor-pointer 
+                          ${photo 
+                              ? "border-gray-300" // Solid border for filled boxes
+                              : "border-gray-400 border-dashed hover:border-blue-500" // Dashed border for empty, blue on hover
+                          } 
+                          overflow-hidden text-sm text-gray-600`} // Default text styling for 'Add Photo'
+            >
+              {photo ? (
+                <>
+                  <img
+                    src={URL.createObjectURL(photo)}
+                    alt={`Upload ${index}`}
+                    className="w-full h-full object-cover"
+                  />
+                  <button
+                    type="button"
+                    onClick={(e) => handleRemoveClick(e, index)}
+                    className="absolute top-1 right-1 bg-black bg-opacity-50 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs"
+                  >
+                    &#x2715;
+                  </button>
+                </>
+              ) : (
+                <>
+                  <CameraIcon />
+                  {index === 0 && (
+                    <span className="text-xs text-gray-600 mt-1">
+                      Add Cover Photo
+                    </span>
+                  )}
+                  {index !== 0 && (
+                     <span className="text-xs text-gray-600 mt-1">
+                       Add Photo
+                     </span>
+                  )}
+                </>
+              )}
+            </div>
+          );
+        })}
       </div>
-      {error && <p className="text-red-500 text-xs mt-2">{error}</p>}
+      {error && <p className="text-red-500 text-xs mt-2 ml-1">{error}</p>} {/* Added ml-1 */}
     </FormSection>
   );
 };
 
 const LocationSection = ({ formData, errors, handleChange }) => (
   <FormSection title="CONFIRM YOUR LOCATION">
+    <p className="text-xs text-gray-500 mb-2 font-medium tracking-wider">CURRENT LOCATION</p> {/* Matched text style */}
     <SelectField
       label="State *"
       name="state"
@@ -423,14 +461,14 @@ const LocationSection = ({ formData, errors, handleChange }) => (
 
 const ReviewDetailsSection = () => (
   <FormSection title="REVIEW YOUR DETAILS">
-    <div className="flex items-center gap-4 p-4 bg-gray-50 rounded-md">
+    <div className="flex items-center gap-4 py-4 px-3 bg-gray-50 rounded-sm border border-gray-300"> {/* Adjusted padding and border/rounded */}
       <img
-        src="https://placehold.co/60x60/4A5568/FFFFFF?text=RS"
+        src="https://placehold.co/60x60/4A5568/FFFFFF?text=RS" // Placeholder for user image
         alt="User"
-        className="w-16 h-16 rounded-full border-2 border-white shadow-sm"
+        className="w-16 h-16 rounded-full border border-gray-300" // Adjusted border color
       />
       <div>
-        <p className="font-bold">Raman Selwan</p>
+        <p className="font-bold text-gray-800">Raman Selwan</p>
         <p className="text-sm text-gray-600">Your details are safe with us.</p>
       </div>
     </div>
@@ -448,6 +486,9 @@ const VerificationSection = ({ formData, errors, handleChange }) => (
       value={formData.mobileNumber}
       onChange={handleChange}
       error={errors.mobileNumber}
+      type="tel" // Use 'tel' for mobile numbers, better for mobile devices
+      maxLength={10} // Enforce 10 digits
+      placeholder="Mobile Phone Number" // Added placeholder
     />
   </FormSection>
 );
@@ -478,6 +519,7 @@ export default function App() {
     mobileNumber: "",
   });
 
+  // Initialize photos with nulls for 20 slots
   const [photos, setPhotos] = useState(Array(20).fill(null));
   const [errors, setErrors] = useState({});
 
@@ -493,81 +535,93 @@ export default function App() {
   const handleFileSelect = (e, type) => {
     const files = Array.from(e.target.files);
     if (files.length === 0) return;
+
     const newPhotos = [...photos];
+    let fileIndex = 0;
+
     if (type === "cover") {
       newPhotos[0] = files[0];
-    } else {
-      let fileIndex = 0;
-      for (let i = 1; i < newPhotos.length && fileIndex < files.length; i++) {
-        if (newPhotos[i] === null) {
-          newPhotos[i] = files[fileIndex];
-          fileIndex++;
-        }
+      fileIndex = 1; // Start filling other files from the second slot
+    }
+
+    // Fill remaining files into available slots, skipping the first if cover was set
+    for (let i = (type === "cover" ? 1 : 0); i < newPhotos.length && fileIndex < files.length; i++) {
+      if (newPhotos[i] === null) {
+        newPhotos[i] = files[fileIndex];
+        fileIndex++;
       }
     }
     setPhotos(newPhotos);
-    e.target.value = null;
+    e.target.value = null; // Clear the input so same file can be selected again
   };
 
   const handleRemovePhoto = (indexToRemove) => {
     const newPhotos = [...photos];
     newPhotos[indexToRemove] = null;
+    // Shift remaining photos to the left to fill the gap (optional, but cleaner for display)
+    if (indexToRemove < newPhotos.length - 1) {
+        for (let i = indexToRemove; i < newPhotos.length - 1; i++) {
+            newPhotos[i] = newPhotos[i + 1];
+        }
+        newPhotos[newPhotos.length - 1] = null; // Clear the last element after shifting
+    }
     setPhotos(newPhotos);
   };
 
   // --- FULLY REVISED validateForm function ---
   const validateForm = () => {
     const newErrors = {};
-    const isNumeric = (val) => /^\d+$/.test(val);
+    // Updated isNumeric to allow empty string for optional fields (as per previous instructions)
+    const isNumeric = (val) => val === "" || /^\d+$/.test(val);
 
-    // Required fields
-    if (!formData.type) newErrors.type = "Type is required.";
-    if (!formData.bhk) newErrors.bhk = "BHK is required.";
-    if (!formData.bathrooms) newErrors.bathrooms = "Bathrooms are required.";
-    if (!formData.furnishing) newErrors.furnishing = "Furnishing is required.";
-    if (!formData.listedBy) newErrors.listedBy = "Listed by is required.";
-    if (!formData.adTitle) newErrors.adTitle = "Ad title is required.";
-    if (!formData.description) newErrors.description = "Description is required.";
-    if (!formData.state) newErrors.state = "State is required.";
+    // Required fields (exact error message as in image)
+    if (!formData.type) newErrors.type = "This field is mandatory.";
+    if (!formData.bhk) newErrors.bhk = "This field is mandatory.";
+    if (!formData.bathrooms) newErrors.bathrooms = "This field is mandatory.";
+    if (!formData.furnishing) newErrors.furnishing = "This field is mandatory.";
+    if (!formData.listedBy) newErrors.listedBy = "This field is mandatory.";
+    if (!formData.adTitle) newErrors.adTitle = "This field is mandatory.";
+    if (!formData.description) newErrors.description = "This field is mandatory.";
+    if (!formData.state) newErrors.state = "This field is mandatory.";
     
-    // Photo validation
-    if (!photos[0]) newErrors.photos = "A cover photo is mandatory.";
+    // Photo validation - exactly as in image
+    if (!photos[0]) newErrors.photos = "This field is mandatory.";
 
-    // Numeric and required fields
+    // Numeric and required fields (exact error message as in image)
     if (!formData.superBuiltupArea) {
-      newErrors.superBuiltupArea = "Super Builtup area is required.";
+      newErrors.superBuiltupArea = "This field is mandatory.";
     } else if (!isNumeric(formData.superBuiltupArea)) {
-      newErrors.superBuiltupArea = "Must be a valid number.";
+      newErrors.superBuiltupArea = "Invalid number."; // Changed from "Must be a valid number."
     }
 
     if (!formData.carpetArea) {
-      newErrors.carpetArea = "Carpet area is required.";
+      newErrors.carpetArea = "This field is mandatory.";
     } else if (!isNumeric(formData.carpetArea)) {
-      newErrors.carpetArea = "Must be a valid number.";
+      newErrors.carpetArea = "Invalid number."; // Changed from "Must be a valid number."
     }
 
     if (!formData.price) {
-      newErrors.price = "Price is required.";
+      newErrors.price = "This field is mandatory.";
     } else if (!isNumeric(formData.price)) {
-      newErrors.price = "Price must be a valid number.";
+      newErrors.price = "Invalid price."; // Changed from "Price must be a valid number."
     }
     
-    // Optional numeric fields
+    // Optional numeric fields (only validate if filled)
     if (formData.maintenance && !isNumeric(formData.maintenance)) {
-        newErrors.maintenance = "Must be a valid number.";
+        newErrors.maintenance = "Invalid number.";
     }
     if (formData.totalFloors && !isNumeric(formData.totalFloors)) {
-        newErrors.totalFloors = "Must be a valid number.";
+        newErrors.totalFloors = "Invalid number.";
     }
     if (formData.floorNo && !isNumeric(formData.floorNo)) {
-        newErrors.floorNo = "Must be a valid number.";
+        newErrors.floorNo = "Invalid number.";
     }
 
-    // Mobile number validation
+    // Mobile number validation (exact error message as in image)
     if (!formData.mobileNumber) {
-      newErrors.mobileNumber = "Mobile number is required.";
+      newErrors.mobileNumber = "This field is mandatory.";
     } else if (!/^\d{10}$/.test(formData.mobileNumber)) {
-      newErrors.mobileNumber = "Please enter a valid 10-digit mobile number.";
+      newErrors.mobileNumber = "Please enter a valid 10-digit mobile number."; // Kept this as it's a standard validation msg
     }
 
     setErrors(newErrors);
@@ -583,32 +637,34 @@ export default function App() {
       navigate("/confirmation");
     } else {
       console.log("Form validation failed.");
-      alert("Please fill all the mandatory fields correctly.");
+      // No alert needed here as errors are displayed next to fields
+      // alert("Please fill all the mandatory fields correctly."); // Removed this
     }
   };
 
   return (
-    <div className="bg-gray-100 min-h-screen font-sans">
-      <div className="max-w-3xl mx-auto bg-white shadow-md">
-        <header className="p-4 border-b text-center">
-          <h1 className="text-xl font-bold text-gray-800">POST YOUR AD</h1>
-        </header>
-        <main className="p-4 sm:p-6 md:p-8">
+    <div className="bg-gray-100 min-h-screen font-sans flex flex-col items-center py-8">
+      <h1 className="text-xl font-bold text-gray-800 mb-6 uppercase">POST YOUR AD</h1> {/* Capitalized as in image */}
+      <div className="w-full max-w-2xl mx-auto bg-white shadow-sm border border-gray-300 rounded-sm overflow-hidden"> {/* Adjusted shadow and rounded corners */}
+        
+        {/* Header section (re-styled to match image) */}
+        <div className="py-4 px-8 border-b border-gray-200 flex justify-between items-center bg-gray-50"> {/* Adjusted padding-y and padding-x */}
+          <div>
+            <p className="text-xs text-gray-500 font-normal tracking-wide">SELECTED CATEGORY</p> {/* tracking-wide */}
+            <p className="font-semibold text-sm text-gray-800">
+              Properties / For Sale: Houses & Apartments
+            </p>
+          </div>
+          <Link
+            to="/choose-category" // Assuming a route to go back to category selection
+            className="text-sm font-semibold text-blue-600 hover:underline"
+          >
+            Change
+          </Link>
+        </div>
+
+        <main className="pb-8"> {/* Added pb for overall bottom padding */}
           <form onSubmit={handlePostAd} noValidate>
-            <div className="py-4 border-b border-gray-200 flex justify-between items-center">
-              <div>
-                <p className="text-xs text-gray-500">SELECTED CATEGORY</p>
-                <p className="font-semibold">
-                  Properties / For Sale: Houses & Apartments
-                </p>
-              </div>
-              <button
-                type="button"
-                className="text-sm font-semibold text-cyan-600 hover:underline"
-              >
-                Change
-              </button>
-            </div>
             <IncludeDetailsSection
               formData={formData}
               errors={errors}
@@ -637,11 +693,10 @@ export default function App() {
               errors={errors}
               handleChange={handleChange}
             />
-            <div className="mt-8">
-              {/* --- CORRECT: Removed Link wrapper from button --- */}
+            <div className="mt-8 px-8"> {/* Adjusted mt and px */}
               <button
                 type="submit"
-                className="w-full bg-cyan-600 text-white font-bold py-3 rounded-md hover:bg-cyan-700 transition-colors duration-300"
+                className="w-1/4 bg-gray-600 text-white font-bold py-2 rounded-md hover:bg-blue-700 transition-colors duration-300 text-sm"
               >
                 POST NOW
               </button>
