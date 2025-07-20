@@ -1,35 +1,14 @@
 import React, { useState, useRef } from "react";
 import { Link, useNavigate } from "react-router-dom"; // Import useNavigate
-
+import { TbCameraPlus } from "react-icons/tb";
+import { Camera } from "lucide-react";
 // --- Generic UI Components ---
-
-const CameraIcon = () => (
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    className="h-6 w-6 text-gray-400" // Slightly lighter gray for icon
-    fill="none"
-    viewBox="0 0 24 24"
-    stroke="currentColor"
-    strokeWidth={1}
-  >
-    <path
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"
-    />
-    <path
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"
-    />
-  </svg>
-);
 
 const FormSection = ({ title, children }) => (
   // Adjusted padding-x to match the image's internal spacing within the main white box.
   // The bottom border is consistent with the image.
   <div className="py-6 border-b border-gray-200 last:border-b-0 px-8">
-    <h3 className="text-lg font-bold text-gray-800 mb-4">{title}</h3>
+    <h3 className="text-xl font-bold text-black mb-4">{title}</h3>
     {children}
   </div>
 );
@@ -37,19 +16,18 @@ const FormSection = ({ title, children }) => (
 const ButtonGroup = ({ label, options, selected, onSelect, error }) => (
   // Increased mb to match spacing
   <div className="mb-6">
-    <label className="block text-sm font-medium text-gray-700 mb-2">
-      {label}
-    </label>
+    <label className="block text-sm font-normal text-black mb-2">{label}</label>
     <div className="flex flex-wrap gap-2">
       {options.map((option) => (
         <button
           key={option}
           type="button"
           onClick={() => onSelect(option)}
-          className={`px-4 py-2 text-sm border rounded-md transition-colors duration-200 
-            ${selected === option
-              ? "bg-blue-50 border-blue-500 text-blue-700 font-semibold" // OLX blue shade for selected state
-              : "bg-white border-gray-300 text-gray-800 hover:border-blue-500" // Standard text color, border matches image
+          className={`px-8 py-2 text-sm border rounded-md transition-colors duration-200 
+            ${
+              selected === option
+                ? "bg-blue-100 border-1 border-black text-black " // OLX blue shade for selected state
+                : "bg-white border-gray-400 text-black " // Standard text color, border matches image
             }`}
         >
           {option}
@@ -74,18 +52,13 @@ const InputField = ({
 }) => (
   // Increased mb
   <div className="mb-6">
-    <label
-      htmlFor={name}
-      className="block text-sm font-medium text-gray-700 mb-2"
-    >
+    <label htmlFor={name} className="block text-sm  text-black mb-2">
       {label}
     </label>
-    <div className="relative">
+    <div className="relative border border-gray-300 rounded-md ">
       {prefix && (
         <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-          <span className="text-gray-500 font-semibold text-lg">
-            {prefix}
-          </span>
+          <span className="text-gray-500 font-semibold text-lg">{prefix}</span>
         </div>
       )}
       <input
@@ -97,14 +70,14 @@ const InputField = ({
         placeholder={placeholder}
         maxLength={maxLength}
         // Adjusted border-color to gray-300 for default and focus-ring to blue-500 as per OLX style
-        className={`w-full h-10 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500 text-base text-gray-800 ${
-          error
-            ? "border-red-500 focus:ring-red-500"
-            : ""
+        className={`w-full h-10 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-800 text-base text-gray-800 ${
+          error ? "border-red-500 focus:ring-red-500" : ""
         } ${prefix ? "pl-8 pr-3" : "px-3"}`} // Adjust pl and pr for general padding
       />
       {showCharCount && (
-        <span className="absolute right-3 bottom-2 text-xs text-gray-400"> {/* Gray 400 for char count */}
+        <span className="absolute right-3 bottom-2 text-xs text-gray-400">
+          {" "}
+          {/* Gray 400 for char count */}
           {value.length} / {maxLength}
         </span>
       )}
@@ -141,9 +114,7 @@ const TextareaField = ({
         rows={5}
         placeholder={placeholder} // Applied placeholder
         className={`w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500 text-base text-gray-800 resize-none ${
-          error
-            ? "border-red-500 focus:ring-red-500"
-            : ""
+          error ? "border-red-500 focus:ring-red-500" : ""
         }`}
       />
       {showCharCount && (
@@ -156,14 +127,10 @@ const TextareaField = ({
   </div>
 );
 
-
 const SelectField = ({ label, name, value, onChange, options, error }) => (
   // Increased mb
   <div className="mb-6">
-    <label
-      htmlFor={name}
-      className="block text-sm font-medium text-gray-700 mb-2"
-    >
+    <label htmlFor={name} className="block text-sm  text-black mb-2">
       {label}
     </label>
     <select
@@ -172,9 +139,7 @@ const SelectField = ({ label, name, value, onChange, options, error }) => (
       value={value}
       onChange={onChange}
       className={`w-full h-10 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500 bg-white text-base text-gray-800 ${
-        error
-          ? "border-red-500 focus:ring-red-500"
-          : ""
+        error ? "border-red-500 focus:ring-red-500" : ""
       }`}
     >
       <option value="" disabled>
@@ -201,27 +166,31 @@ const IncludeDetailsSection = ({
   <FormSection title="INCLUDE SOME DETAILS">
     <ButtonGroup
       label="Type *"
-      options={["Apartment", "Builder Floor", "Farm House", "House & Villa"]}
+      options={[
+        "Flats/Apartment",
+        "Independent/Builder Floor",
+        "House & Villa",
+      ]}
       selected={formData.type}
       onSelect={(val) => handleSelect("type", val)}
       error={errors.type}
     />
     <ButtonGroup
-      label="BHK *"
+      label="BHK "
       options={["1", "2", "3", "4", "4+"]}
       selected={formData.bhk}
       onSelect={(val) => handleSelect("bhk", val)}
       error={errors.bhk}
     />
     <ButtonGroup
-      label="Bathrooms *"
+      label="Bathrooms "
       options={["1", "2", "3", "4", "4+"]}
       selected={formData.bathrooms}
       onSelect={(val) => handleSelect("bathrooms", val)}
       error={errors.bathrooms}
     />
     <ButtonGroup
-      label="Furnishing *"
+      label="Furnishing "
       options={["Furnished", "Semi-Furnished", "Unfurnished"]}
       selected={formData.furnishing}
       onSelect={(val) => handleSelect("furnishing", val)}
@@ -234,7 +203,7 @@ const IncludeDetailsSection = ({
       onSelect={(val) => handleSelect("projectStatus", val)}
     />
     <ButtonGroup
-      label="Listed By *"
+      label="Listed By"
       options={["Builder", "Dealer", "Owner"]}
       selected={formData.listedBy}
       onSelect={(val) => handleSelect("listedBy", val)}
@@ -249,7 +218,6 @@ const IncludeDetailsSection = ({
         value={formData.superBuiltupArea}
         onChange={handleChange}
         error={errors.superBuiltupArea}
-        placeholder="Super Builtup area"
         type="number" // Ensure numeric input
       />
       <InputField
@@ -258,16 +226,22 @@ const IncludeDetailsSection = ({
         value={formData.carpetArea}
         onChange={handleChange}
         error={errors.carpetArea}
-        placeholder="Carpet Area"
         type="number" // Ensure numeric input
       />
+      <ButtonGroup
+        label="Bachelors Allowed"
+        options={["NO", "YES"]}
+        selected={formData.listedBy}
+        onSelect={(val) => handleSelect("listedBy", val)}
+        error={errors.listedBy}
+      />
+
       <InputField
         label="Maintenance (Monthly)"
         name="maintenance"
         value={formData.maintenance}
         onChange={handleChange}
         error={errors.maintenance}
-        placeholder="Monthly Maintenance"
         type="number" // Ensure numeric input
       />
       <InputField
@@ -276,7 +250,6 @@ const IncludeDetailsSection = ({
         value={formData.totalFloors}
         onChange={handleChange}
         error={errors.totalFloors}
-        placeholder="Total Floors"
         type="number" // Ensure numeric input
       />
       <InputField
@@ -285,7 +258,6 @@ const IncludeDetailsSection = ({
         value={formData.floorNo}
         onChange={handleChange}
         error={errors.floorNo}
-        placeholder="Floor Number"
         type="number" // Ensure numeric input
       />
     </div>
@@ -316,7 +288,6 @@ const IncludeDetailsSection = ({
       name="projectName"
       value={formData.projectName}
       onChange={handleChange}
-      placeholder="Project name"
     />
     <InputField
       label="Ad title *"
@@ -326,7 +297,6 @@ const IncludeDetailsSection = ({
       error={errors.adTitle}
       maxLength={70}
       showCharCount={true}
-      placeholder="Mention the key features of your item (e.g. brand, model, age, type)"
     />
     <TextareaField
       label="Description *"
@@ -336,25 +306,42 @@ const IncludeDetailsSection = ({
       error={errors.description}
       maxLength={4096}
       showCharCount={true}
-      placeholder="Include condition, features and reason for selling"
     />
   </FormSection>
 );
 
-const PriceSection = ({ formData, errors, handleChange }) => (
-  <FormSection title="SET A PRICE">
-    <InputField
-      label="Price *"
-      name="price"
-      value={formData.price}
-      onChange={handleChange}
-      error={errors.price}
-      prefix="₹"
-      placeholder="0"
-      type="number"
-    />
-  </FormSection>
-);
+const PriceSection = ({ formData, errors, setFormData }) => {
+  const formatIndianCurrency = (value) => {
+    if (!value) return "";
+    const num = value.toString().replace(/,/g, "");
+    const x = parseFloat(num);
+    if (isNaN(x)) return "";
+    return x.toLocaleString("en-IN");
+  };
+
+  const handlePriceChange = (e) => {
+    const rawValue = e.target.value.replace(/,/g, "");
+    if (!/^\d*\.?\d*$/.test(rawValue)) return; // prevent non-numeric input
+    setFormData((prev) => ({
+      ...prev,
+      price: rawValue,
+    }));
+  };
+
+  return (
+    <FormSection title="SET A PRICE">
+      <InputField
+        label="Price *"
+        name="price"
+        value={formatIndianCurrency(formData.price)}
+        onChange={handlePriceChange}
+        error={errors.price}
+        prefix="₹  |"
+        type="text" // use text instead of number
+      />
+    </FormSection>
+  );
+};
 
 const PhotoUploadSection = ({ photos, error, onFileSelect, onRemove }) => {
   const coverInputRef = useRef(null);
@@ -370,12 +357,13 @@ const PhotoUploadSection = ({ photos, error, onFileSelect, onRemove }) => {
   };
 
   const handleRemoveClick = (e, index) => {
-    e.stopPropagation(); // Prevent triggering handleBoxClick
+    e.stopPropagation(); // Prevent image box click
     onRemove(index);
   };
 
   return (
     <FormSection title="UPLOAD UP TO 20 PHOTOS">
+      {/* Hidden Inputs */}
       <input
         type="file"
         ref={coverInputRef}
@@ -391,28 +379,38 @@ const PhotoUploadSection = ({ photos, error, onFileSelect, onRemove }) => {
         multiple
         onChange={(e) => onFileSelect(e, "other")}
       />
-      {/* Adjusted grid columns and gap to match the image, and refined border styles */}
+
+      {/* Grid Layout */}
       <div className="grid grid-cols-4 sm:grid-cols-5 md:grid-cols-6 gap-2">
-        {Array.from({ length: 20 }).map((_, index) => { // Render 20 boxes explicitly
+        {Array.from({ length: 20 }).map((_, index) => {
           const photo = photos[index];
           return (
             <div
               key={index}
               onClick={() => handleBoxClick(index, !!photo)}
               className={`relative aspect-square border rounded-md flex flex-col items-center justify-center text-center cursor-pointer 
-                          ${photo 
-                              ? "border-gray-300" // Solid border for filled boxes
-                              : "border-gray-400 border-dashed hover:border-blue-500" // Dashed border for empty, blue on hover
-                          } 
-                          overflow-hidden text-sm text-gray-600`} // Default text styling for 'Add Photo'
+                ${
+                  photo
+                    ? "border-gray-300"
+                    : "border-gray-400 border-2 hover:border-blue-500"
+                } overflow-hidden text-sm text-gray-600`}
             >
               {photo ? (
                 <>
                   <img
                     src={URL.createObjectURL(photo)}
-                    alt={`Upload ${index}`}
+                    alt={`Uploaded ${index}`}
                     className="w-full h-full object-cover"
                   />
+
+                  {/* Cover Label for First Image */}
+                  {index === 0 && (
+                    <span className="absolute bottom-1 bg-blue-600 text-white text-[10px] px-4 py-[2px] rounded-xl">
+                      Cover
+                    </span>
+                  )}
+
+                  {/* Remove Button */}
                   <button
                     type="button"
                     onClick={(e) => handleRemoveClick(e, index)}
@@ -423,75 +421,171 @@ const PhotoUploadSection = ({ photos, error, onFileSelect, onRemove }) => {
                 </>
               ) : (
                 <>
-                  <CameraIcon />
-                  {index === 0 && (
-                    <span className="text-xs text-gray-600 mt-1">
-                      Add Cover Photo
-                    </span>
-                  )}
-                  {index !== 0 && (
-                     <span className="text-xs text-gray-600 mt-1">
-                       Add Photo
-                     </span>
-                  )}
+                  <TbCameraPlus className="w-6 h-6 text-gray-500" />
+                  <span className="text-xs text-gray-600 mt-1">
+                    {index === 0 ? "Add Cover Photo" : "Add Photo"}
+                  </span>
                 </>
               )}
             </div>
           );
         })}
       </div>
-      {error && <p className="text-red-500 text-xs mt-2 ml-1">{error}</p>} {/* Added ml-1 */}
+
+      {error && <p className="text-red-500 text-xs mt-2 ml-1">{error}</p>}
     </FormSection>
   );
 };
 
-const LocationSection = ({ formData, errors, handleChange }) => (
-  <FormSection title="CONFIRM YOUR LOCATION">
-    <p className="text-xs text-gray-500 mb-2 font-medium tracking-wider">CURRENT LOCATION</p> {/* Matched text style */}
-    <SelectField
-      label="State *"
-      name="state"
-      value={formData.state}
-      onChange={handleChange}
-      options={["Haryana", "Punjab", "Delhi", "Uttar Pradesh", "Rajasthan"]}
-      error={errors.state}
-    />
-  </FormSection>
-);
-
-const ReviewDetailsSection = () => (
-  <FormSection title="REVIEW YOUR DETAILS">
-    <div className="flex items-center gap-4 py-4 px-3 bg-gray-50 rounded-sm border border-gray-300"> {/* Adjusted padding and border/rounded */}
-      <img
-        src="https://placehold.co/60x60/4A5568/FFFFFF?text=RS" // Placeholder for user image
-        alt="User"
-        className="w-16 h-16 rounded-full border border-gray-300" // Adjusted border color
-      />
-      <div>
-        <p className="font-bold text-gray-800">Raman Selwan</p>
-        <p className="text-sm text-gray-600">Your details are safe with us.</p>
+const LocationSection = ({
+  formData,
+  errors,
+  handleChange,
+  selectedTab,
+  setSelectedTab,
+}) => {
+  return (
+    <FormSection title="CONFIRM YOUR LOCATION">
+      {/* Tab Switcher */}
+      <div className="flex mb-4 border-b">
+        <button
+          className={`px-4 py-2 text-sm font-semibold ${
+            selectedTab === "list"
+              ? "border-b-2 border-blue-700 text-black"
+              : "text-gray-500"
+          }`}
+          onClick={() => setSelectedTab("list")}
+        >
+          LIST
+        </button>
+        <button
+          className={`px-4 py-2 text-sm font-semibold ${
+            selectedTab === "current"
+              ? "border-b-2 border-blue-700 text-black"
+              : "text-gray-500"
+          }`}
+          onClick={() => setSelectedTab("current")}
+        >
+          CURRENT LOCATION
+        </button>
       </div>
-    </div>
-  </FormSection>
-);
 
-const VerificationSection = ({ formData, errors, handleChange }) => (
-  <FormSection title="LET'S VERIFY YOUR ACCOUNT">
-    <p className="text-sm text-gray-600 mb-4">
-      We will send you a confirmation code by sms on the next step.
-    </p>
-    <InputField
-      label="Mobile Phone Number *"
-      name="mobileNumber"
-      value={formData.mobileNumber}
-      onChange={handleChange}
-      error={errors.mobileNumber}
-      type="tel" // Use 'tel' for mobile numbers, better for mobile devices
-      maxLength={10} // Enforce 10 digits
-      placeholder="Mobile Phone Number" // Added placeholder
-    />
-  </FormSection>
-);
+      {/* Same UI for both tabs */}
+      <div className="space-y-4">
+        {/* State */}
+        <SelectField
+          label="State *"
+          name="state"
+          value={formData.state}
+          onChange={handleChange}
+          options={["Haryana", "Punjab", "Delhi", "Uttar Pradesh", "Rajasthan"]}
+          error={errors.state}
+        />
+
+        {/* City appears only after State is selected */}
+        {formData.state && (
+          <InputField
+            label="City *"
+            name="city"
+            value={formData.city}
+            onChange={handleChange}
+            error={errors.city}
+          />
+        )}
+
+        {/* Neighbourhood appears only after City is selected */}
+        {formData.state && formData.city && (
+          <InputField
+            label="Neighbourhood *"
+            name="neighbourhood"
+            value={formData.neighbourhood}
+            onChange={handleChange}
+            error={errors.neighbourhood}
+          />
+        )}
+      </div>
+    </FormSection>
+  );
+};
+
+// import { useRef } from "react";
+
+const ReviewDetailsSection = ({ formData, setFormData }) => {
+  const fileInputRef = useRef();
+
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      const imageUrl = URL.createObjectURL(file);
+      setFormData((prev) => ({ ...prev, profileImage: imageUrl }));
+    }
+  };
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
+
+  return (
+    <FormSection title="REVIEW YOUR DETAILS">
+      <div className="flex items-start gap-6 mb-6">
+        {/* Profile Image + Upload Button */}
+        <div className="relative w-24 h-24">
+          <img
+            src={
+              formData.profileImage ||
+              "https://placehold.co/100x100/4A5568/FFFFFF?text=RS"
+            }
+            alt="Profile"
+            className="w-24 h-24 object-cover rounded-full border border-gray-300"
+          />
+
+          <TbCameraPlus
+            type="button"
+            onClick={() => fileInputRef.current.click()}
+            className="absolute bottom-1 right-1 bg-gray-200 w-8 h-8 p-1 rounded-full cursor-pointer hover:bg-gray-300"
+          />
+          <input
+            type="file"
+            accept="image/*"
+            className="hidden"
+            ref={fileInputRef}
+            onChange={handleImageChange}
+          />
+        </div>
+
+        {/* Name Input */}
+        <div className="flex-1">
+          <label className="block text-sm font-medium text-gray-700 mb-1">
+            Name
+          </label>
+          <input
+            type="text"
+            name="name"
+            value={formData.name}
+            maxLength={30}
+            onChange={handleChange}
+            className="w-full px-4 py-2 border rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
+          />
+          <p className="text-xs text-gray-500 mt-1">
+            {formData.name.length} / 30
+          </p>
+        </div>
+      </div>
+
+      {/* Phone Number Display */}
+      <div className="mt-2 flex flex-row gap-16 ">
+        <p className="text-sm text-gray-700 font-medium mb-1">
+          Your phone number
+        </p>
+        <p className="text-sm text-black">+91{formData.phoneNumber}</p>
+      </div>
+    </FormSection>
+  );
+};
 
 // --- Main App Component (Container) ---
 
@@ -517,8 +611,14 @@ export default function App() {
     price: "",
     state: "",
     mobileNumber: "",
+    // state: "",
+    city: "",
+    neighbourhood: "",
+    name: "Raman Selwan",
+    phoneNumber: "7533801905",
+    profileImage: "", // base64 or URL
   });
-
+  const [selectedTab, setSelectedTab] = useState("list");
   // Initialize photos with nulls for 20 slots
   const [photos, setPhotos] = useState(Array(20).fill(null));
   const [errors, setErrors] = useState({});
@@ -545,7 +645,11 @@ export default function App() {
     }
 
     // Fill remaining files into available slots, skipping the first if cover was set
-    for (let i = (type === "cover" ? 1 : 0); i < newPhotos.length && fileIndex < files.length; i++) {
+    for (
+      let i = type === "cover" ? 1 : 0;
+      i < newPhotos.length && fileIndex < files.length;
+      i++
+    ) {
       if (newPhotos[i] === null) {
         newPhotos[i] = files[fileIndex];
         fileIndex++;
@@ -560,10 +664,10 @@ export default function App() {
     newPhotos[indexToRemove] = null;
     // Shift remaining photos to the left to fill the gap (optional, but cleaner for display)
     if (indexToRemove < newPhotos.length - 1) {
-        for (let i = indexToRemove; i < newPhotos.length - 1; i++) {
-            newPhotos[i] = newPhotos[i + 1];
-        }
-        newPhotos[newPhotos.length - 1] = null; // Clear the last element after shifting
+      for (let i = indexToRemove; i < newPhotos.length - 1; i++) {
+        newPhotos[i] = newPhotos[i + 1];
+      }
+      newPhotos[newPhotos.length - 1] = null; // Clear the last element after shifting
     }
     setPhotos(newPhotos);
   };
@@ -581,9 +685,10 @@ export default function App() {
     if (!formData.furnishing) newErrors.furnishing = "This field is mandatory.";
     if (!formData.listedBy) newErrors.listedBy = "This field is mandatory.";
     if (!formData.adTitle) newErrors.adTitle = "This field is mandatory.";
-    if (!formData.description) newErrors.description = "This field is mandatory.";
+    if (!formData.description)
+      newErrors.description = "This field is mandatory.";
     if (!formData.state) newErrors.state = "This field is mandatory.";
-    
+
     // Photo validation - exactly as in image
     if (!photos[0]) newErrors.photos = "This field is mandatory.";
 
@@ -605,16 +710,16 @@ export default function App() {
     } else if (!isNumeric(formData.price)) {
       newErrors.price = "Invalid price."; // Changed from "Price must be a valid number."
     }
-    
+
     // Optional numeric fields (only validate if filled)
     if (formData.maintenance && !isNumeric(formData.maintenance)) {
-        newErrors.maintenance = "Invalid number.";
+      newErrors.maintenance = "Invalid number.";
     }
     if (formData.totalFloors && !isNumeric(formData.totalFloors)) {
-        newErrors.totalFloors = "Invalid number.";
+      newErrors.totalFloors = "Invalid number.";
     }
     if (formData.floorNo && !isNumeric(formData.floorNo)) {
-        newErrors.floorNo = "Invalid number.";
+      newErrors.floorNo = "Invalid number.";
     }
 
     // Mobile number validation (exact error message as in image)
@@ -643,27 +748,39 @@ export default function App() {
   };
 
   return (
-    <div className="bg-gray-100 min-h-screen font-sans flex flex-col items-center py-8">
-      <h1 className="text-xl font-bold text-gray-800 mb-6 uppercase">POST YOUR AD</h1> {/* Capitalized as in image */}
-      <div className="w-full max-w-2xl mx-auto bg-white shadow-sm border border-gray-300 rounded-sm overflow-hidden"> {/* Adjusted shadow and rounded corners */}
-        
+    <div className="bg-gray-100 min-h-screen w-full font-sans flex flex-col items-center py-8">
+      <h1 className="text-2xl font-bold text-gray-800 mb-6 uppercase">
+        POST YOUR AD
+      </h1>{" "}
+      {/* Capitalized as in image */}
+      <div className="w-full max-w-3xl mx-auto bg-white shadow-sm border border-gray-300 rounded-sm overflow-hidden">
+        {" "}
+        {/* Adjusted shadow and rounded corners */}
         {/* Header section (re-styled to match image) */}
-        <div className="py-4 px-8 border-b border-gray-200 flex justify-between items-center bg-gray-50"> {/* Adjusted padding-y and padding-x */}
+        <div className="py-4 px-4 border-b border-gray-200 flex justify-between items-center bg-gray-50">
+          {" "}
+          {/* Adjusted padding-y and padding-x */}
           <div>
-            <p className="text-xs text-gray-500 font-normal tracking-wide">SELECTED CATEGORY</p> {/* tracking-wide */}
-            <p className="font-semibold text-sm text-gray-800">
-              Properties / For Sale: Houses & Apartments
-            </p>
+            <p className="text-xl text-black font-bold tracking-wide">
+              SELECTED CATEGORY
+            </p>{" "}
+            {/* tracking-wide */}
+            <div className="flex items-center justify-between mt-2 gap-2.5">
+              <p className="font-semibold text-sm text-gray-400">
+                Properties / For Sale: Houses & Apartments
+              </p>
+              <Link
+                to="/" // Assuming a route to go back to category selection
+                className="text-sm font-bold text-blue-600 hover:underline"
+              >
+                Change
+              </Link>
+            </div>
           </div>
-          <Link
-            to="/choose-category" // Assuming a route to go back to category selection
-            className="text-sm font-semibold text-blue-600 hover:underline"
-          >
-            Change
-          </Link>
         </div>
-
-        <main className="pb-8"> {/* Added pb for overall bottom padding */}
+        <main className="pb-8">
+          {" "}
+          {/* Added pb for overall bottom padding */}
           <form onSubmit={handlePostAd} noValidate>
             <IncludeDetailsSection
               formData={formData}
@@ -674,6 +791,7 @@ export default function App() {
             <PriceSection
               formData={formData}
               errors={errors}
+              setFormData={setFormData}
               handleChange={handleChange}
             />
             <PhotoUploadSection
@@ -682,21 +800,26 @@ export default function App() {
               onFileSelect={handleFileSelect}
               onRemove={handleRemovePhoto}
             />
+
             <LocationSection
               formData={formData}
               errors={errors}
               handleChange={handleChange}
+              selectedTab={selectedTab}
+              setSelectedTab={setSelectedTab}
             />
-            <ReviewDetailsSection />
-            <VerificationSection
+
+            <ReviewDetailsSection
               formData={formData}
-              errors={errors}
-              handleChange={handleChange}
+              setFormData={setFormData}
             />
-            <div className="mt-8 px-8"> {/* Adjusted mt and px */}
+
+            <div className="mt-8 px-8">
+              {" "}
+              {/* Adjusted mt and px */}
               <button
                 type="submit"
-                className="w-1/4 bg-gray-600 text-white font-bold py-2 rounded-md hover:bg-blue-700 transition-colors duration-300 text-sm"
+                className="w-28 h-12 bg-gray-200 text-white font-bold py-2 rounded-md hover:bg-blue-700 transition-colors duration-300 text-sm"
               >
                 POST NOW
               </button>
