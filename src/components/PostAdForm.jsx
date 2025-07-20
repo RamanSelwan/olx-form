@@ -817,12 +817,14 @@ export default function App() {
             <div className="mt-8 px-8">
               {" "}
               {/* Adjusted mt and px */}
+             <Link to="/confirmation">
               <button
                 type="submit"
                 className="w-28 h-12 bg-gray-200 text-white font-bold py-2 rounded-md hover:bg-blue-700 transition-colors duration-300 text-sm"
               >
                 POST NOW
               </button>
+             </Link>
             </div>
           </form>
         </main>
